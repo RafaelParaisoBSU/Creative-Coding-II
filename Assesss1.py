@@ -47,10 +47,7 @@ def checkAnswer():
     user_answer = int(answer_entry.get())
     
     if user_answer == correct_answer:
-        if first_attempt:
-            score += 10
-        else:
-            score += 5
+        score += 10 if first_attempt else 5
         result_label.config(text="Correct!", fg="green")
         question_count += 1
         first_attempt = True
@@ -59,12 +56,9 @@ def checkAnswer():
         else:
             displayResults()
     else:
-        if first_attempt:
-            result_label.config(text="Incorrect. Try again.", fg="red")
-            first_attempt = False
-        else:
-            result_label.config(text="Incorrect. Moving to next question.", fg="red")
-            first_attempt = True
+        result_label.config(text="Incorrect. Try again." if first_attempt else "Incorrect. Moving to next question.", fg="red")
+        first_attempt = not first_attempt
+        if not first_attempt:
             question_count += 1
             if question_count < 10:
                 generateProblem()
@@ -117,7 +111,7 @@ question_label = tk.Label(quiz_frame, text="", font=("Arial", 14))
 question_label.pack(pady=10)
 answer_entry = tk.Entry(quiz_frame, font=("Arial", 14))
 answer_entry.pack(pady=5)
-submit_button = tk.Button(quiz_frame, text="Submit", command=checkAnswer)
+submit_button = tk.Button(quiz_frame, text="Submit", command=lambda: checkAnswer())
 submit_button.pack(pady=10)
 result_label = tk.Label(quiz_frame, text="", font=("Arial", 12))
 result_label.pack()
