@@ -1,10 +1,11 @@
-import tkinter as tk
+from tkinter import *
 import random
 
 # Initialize the main application window
-root = tk.Tk()
-root.title("Arithmetic Quiz Game")
-root.geometry("400x300")
+root = Tk()
+root.title("Quiz Game - Exercise 1")
+root.geometry("1280x720")
+root.resizable(False, False)
 
 # Global variables
 score = 0
@@ -13,7 +14,14 @@ difficulty = 1
 first_attempt = True
 num1, num2, operation, correct_answer = None, None, None, None
 
+
+
 # Functions
+
+def displayDiff():
+    title_frame.pack_forget()
+    menu_frame.pack()
+
 def displayMenu():
     global difficulty
     menu_frame.pack_forget()
@@ -40,7 +48,7 @@ def generateProblem():
 
 def displayProblem():
     question_label.config(text=f"{num1} {operation} {num2} = ")
-    answer_entry.delete(0, tk.END)
+    answer_entry.delete(0, END)
 
 def checkAnswer():
     global score, first_attempt, question_count
@@ -94,34 +102,41 @@ def startQuiz():
     quiz_frame.pack()
 
 # Frames
-menu_frame = tk.Frame(root)
-quiz_frame = tk.Frame(root)
-result_frame = tk.Frame(root)
+title_frame = Frame(root)
+menu_frame = Frame(root)
+quiz_frame = Frame(root)
+result_frame = Frame(root)
+
+Label(title_frame, text="Welcome to Raf's Math Quiz!", font=("Arial", 48)).pack(pady=100, anchor=CENTER)
+Label(title_frame, text="Click 'START' to Begin!", font=("Arial", 32)).pack(pady=50, anchor=CENTER)
+Button(title_frame, text="START", command=displayDiff, height=50, width=25, font=("Arial", 24), bg="red").pack(pady=100, anchor=CENTER)
+title_frame.pack()
 
 # Menu frame
-difficulty_var = tk.IntVar(value=1)
-tk.Label(menu_frame, text="Choose Difficulty Level", font=("Arial", 14)).pack(pady=10)
-tk.Radiobutton(menu_frame, text="Easy (1-digit)", variable=difficulty_var, value=1).pack(anchor="w")
-tk.Radiobutton(menu_frame, text="Moderate (2-digit)", variable=difficulty_var, value=2).pack(anchor="w")
-tk.Radiobutton(menu_frame, text="Advanced (4-digit)", variable=difficulty_var, value=3).pack(anchor="w")
-tk.Button(menu_frame, text="Start Quiz", command=displayMenu).pack(pady=20)
+difficulty_var = IntVar(value=1)
+Label(menu_frame, text="Choose Difficulty Level", font=("Arial", 24)).pack(pady=50)
+Radiobutton(menu_frame, text="Easy (1-digit)", variable=difficulty_var, value=1, font=("Arial", 18)).pack(anchor="w", pady=20)
+Radiobutton(menu_frame, text="Moderate (2-digit)", variable=difficulty_var, value=2, font=("Arial", 18)).pack(anchor="w", pady=20)
+Radiobutton(menu_frame, text="Advanced (4-digit)", variable=difficulty_var, value=3, font=("Arial", 18)).pack(anchor="w", pady=20)
+Button(menu_frame, text="START QUIZ", command=displayMenu, height=2, width=25, font=("Arial", 24), bg="red").pack(pady=100, anchor=CENTER)
+title_frame.pack()
 
 # Quiz frame
-question_label = tk.Label(quiz_frame, text="", font=("Arial", 14))
-question_label.pack(pady=10)
-answer_entry = tk.Entry(quiz_frame, font=("Arial", 14))
-answer_entry.pack(pady=5)
-submit_button = tk.Button(quiz_frame, text="Submit", command=lambda: checkAnswer())
-submit_button.pack(pady=10)
-result_label = tk.Label(quiz_frame, text="", font=("Arial", 12))
+question_label = Label(quiz_frame, text="", font=("Arial", 32))
+question_label.pack(pady=50)
+answer_entry = Entry(quiz_frame, font=("Arial", 32), bg="grey")
+answer_entry.pack(pady=50)
+submit_button = Button(quiz_frame, text="Submit", command=lambda: checkAnswer(), height=2, width=25, font=("Arial", 24), bg="red")
+submit_button.pack(pady=50)
+result_label = Label(quiz_frame, text="", font=("Arial", 32))
 result_label.pack()
 
 # Result frame
-score_label = tk.Label(result_frame, text="", font=("Arial", 14))
-score_label.pack(pady=10)
-grade_label = tk.Label(result_frame, text="", font=("Arial", 14))
-grade_label.pack(pady=5)
-retry_button = tk.Button(result_frame, text="Play Again", command=resetQuiz)
+score_label = Label(result_frame, text="", font=("Arial", 32))
+score_label.pack(pady=50)
+grade_label = Label(result_frame, text="", font=("Arial", 18))
+grade_label.pack(pady=25)
+retry_button = Button(result_frame, text="Play Again", command=resetQuiz, height=2, width=25, font=("Arial", 24), bg="red")
 retry_button.pack(pady=20)
 
 # Display the menu frame initially
