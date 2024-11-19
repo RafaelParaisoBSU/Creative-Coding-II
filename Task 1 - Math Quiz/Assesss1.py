@@ -143,6 +143,24 @@ def backToMenu():
     quiz_frame.pack_forget()  # Hides the quiz frame
     menu_frame.pack(pady=50)  # Shows the menu frame
 
+    
+def exitToTitle():
+    global score, question_count, first_attempt
+    # Reset all game states
+    score = 0
+    question_count = 0
+    first_attempt = True
+    score_display.config(text="Score: 0")
+    result_label.config(text="", bg=COLOR_BG)
+    
+    # Hide all frames except title
+    quiz_frame.pack_forget()
+    menu_frame.pack_forget()
+    result_frame.pack_forget()
+    
+    # Show title frame
+    title_frame.pack(fill=tk.BOTH, expand=True)
+
 # Function to reset the quiz and return to the title screen
 def resetQuiz():
     global score, question_count, first_attempt
@@ -231,7 +249,7 @@ menu_description = tk.Label(
     text=(
         "This Quiz has 10 questions to solve. Each question is worth 10 points. "
         "You can choose between 3 difficulties: Easy (1-digit questions), "
-        "Moderate (2-digit questions), and Advanced (4-digit questions). "
+        "Intermed (2-digit questions), and Advanced (4-digit questions). "
         "Once you get an answer wrong, you get another attempt, but it will only cost 5 points."
     ),
     font=(montserrat_font, 16),
@@ -245,7 +263,7 @@ menu_description.pack(pady=5, padx=50)
 # Difficulty options for the radiobuttons
 difficulty_options = [
     ("Easy (1-digit)", 1),
-    ("Moderate (2-digit)", 2),
+    ("Intermediate (2-digit)", 2),
     ("Advanced (4-digit)", 3)
 ]
 
@@ -286,7 +304,7 @@ start_quiz_button.pack(pady=5)
 # Button to return to the title screen
 back_to_title_button = tk.Button(
     menu_frame, 
-    text="Back to MENU", 
+    text="BACK TO MENU", 
     command=backToTitle, 
     height=1, 
     width=20, 
@@ -298,7 +316,7 @@ back_to_title_button = tk.Button(
     bd=0,
     relief='raised'
 )
-back_to_title_button.pack(pady=5)
+back_to_title_button.pack(pady=2)
 
 # Button to return to difficulty selection (in quiz frame)
 back_button = tk.Button(
@@ -324,7 +342,8 @@ score_display = tk.Label(
     bg=COLOR_BG, 
     fg=COLOR_PRIMARY
 )
-score_display.pack(pady=5)
+score_display.pack()
+
 
 # Question label to display the problem
 question_label = tk.Label(
@@ -346,7 +365,7 @@ answer_entry = tk.Entry(
     bd=2,
     relief='groove'
 )
-answer_entry.pack(pady=20, ipady=5, ipadx=20)
+answer_entry.pack(pady=5, ipady=5, ipadx=20)
 answer_entry.bind('<Return>', checkAnswer)  # Binds Enter key to submit answer
 
 # Submit button in the quiz frame
@@ -354,7 +373,7 @@ submit_button = tk.Button(
     quiz_frame, 
     text="Submit", 
     command=checkAnswer, 
-    height=2, 
+    height=1, 
     width=15, 
     font=(montserrat_font, 24, 'bold'), 
     bg=COLOR_ERROR, 
@@ -364,7 +383,24 @@ submit_button = tk.Button(
     bd=0,
     relief='raised'
 )
-submit_button.pack()
+submit_button.pack(pady=10)
+
+# Exit button for quiz frame
+exit_quiz_button = tk.Button(
+    quiz_frame, 
+    text="Exit Quiz", 
+    command=exitToTitle, 
+    height=1, 
+    width=15, 
+    font=(montserrat_font, 24, 'bold'), 
+    bg='orange', 
+    fg=COLOR_BUTTON_FG,
+    activebackground='#c82333',
+    cursor="hand2",
+    bd=0,
+    relief='raised'
+)
+exit_quiz_button.pack(pady=5)
 
 # Label to display result messages
 result_label = tk.Label(
@@ -395,6 +431,7 @@ grade_label = tk.Label(
     fg=COLOR_PRIMARY
 )
 grade_label.pack(pady=10)
+
 
 # Button to play again (reset the quiz)
 retry_button = tk.Button(
